@@ -1,0 +1,4 @@
+env
+.idea/
+docker-compose.dev.yml
+__pycache__/

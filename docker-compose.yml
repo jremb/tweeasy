@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  pg:
+    image: postgres
+    environment:
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?err}"
+    networks:
+      - tweeasy-public
+    ports:
+      # pc_port:container_port
+      - "5432:5432"  # <= You may want to change left port
+    volumes:
+      # Below is for example purposes. Change to preferred path
+      # Windows example:
+      - C:/docker_volumes/postgres_data:/var/lib/postgresql/data
+      # Mac example:
+      # - /Users/<username>/docker_volumes/postgres_data:/var/lib/postgesql/data
+  tweeasy:
+    image: jrem/tweeasy:v0.0.5
+    depends_on:
+      - pg
+    environment:
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?err}"
+      - "TWITTER_API_BEARER=${TWITTER_API_BEARER:?err}"
+      - "CONSUMER_KEY=${CONSUMER_KEY:?err}"
+      - "CONSUMER_SECRET=${CONSUMER_SECRET:?err}"
+      - "ACCESS_TOKEN=${ACCESS_TOKEN:?err}"
+      - "ACCESS_SECRET=${ACCESS_SECRET:?err}"
+    networks:
+      - tweeasy-public
+    volumes:
+      # Below is for example purposes. Change to preferred path
+      # Windows example:
+      - C:/docker_volumes/tweeasy_data:/code/src/data
+      # Mac example:
+      # /Users/<username>/docker_volumes/tweeasy_data:/code/src/data
+    tty: true
+    stdin_open: true
+
+networks:
+  tweeasy-public:
+    external: false
