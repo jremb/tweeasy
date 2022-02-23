@@ -108,8 +108,7 @@ def process_lookup_users(users_list: List[User], ids_exist: bool = False) -> Non
 @log
 async def sleep_track(reset_time) -> None:
     """Sleeps for 1 second and then updates sleep progress bar
-    until current time >= reset time. If no progress instance is passed,
-    then one is instantiated will create one.
+    until current time >= reset time.
 
     Args:
         reset_time (int): time at which api rate limit will reset
@@ -153,7 +152,6 @@ def get_rate_limit(api, query: str = "ids") -> Tuple[int, int]:
     elif query == "lookup":
         lookup_rate_status = status["resources"]["users"]["/users/lookup"]
         logger.debug(f"lookup rate_status = {lookup_rate_status}")
-        # rate_limit = lookup_rate_status["remaining"] * 20 - 100 if lookup_rate_status["remaining"] else 0
         rate_limit = lookup_rate_status["remaining"] * 100 - 1 if lookup_rate_status["remaining"] else 0
         reset_time = lookup_rate_status["reset"] - int(time.time())
         return rate_limit, reset_time
