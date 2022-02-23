@@ -36,9 +36,9 @@ def with_api1_connection(func):
         auth.set_access_token(params["acc_token"], params["acc_sec"])
         api = tweepy.API(
             auth,
-            retry_count=5,
+            retry_count=10,
             retry_delay=60,
-            retry_errors=[500, 503],
+            retry_errors=[443, 500, 503],
             wait_on_rate_limit=True)
         try:
             res = func(api, *args, **kwargs)
